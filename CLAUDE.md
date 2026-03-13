@@ -435,3 +435,236 @@ The workspace is considered successfully bootstrapped when:
 - the Markdown files contain meaningful initial scaffolding
 - the Mermaid files contain valid starter diagrams
 - the repository is ready for future architecture and implementation work
+
+## Implementation-Ready Scaffold Extension
+
+In addition to the base workspace bootstrap, extend the repository with implementation-ready starter artifacts.
+
+### Extension goal
+
+Prepare the `mini-cloud-proxmox` workspace not only as a documentation/design repository, but also as an initial executable scaffold for future Kubernetes deployment work.
+
+The extension must remain:
+- idempotent
+- non-destructive
+- conservative
+- compatible with the existing repository structure already created
+
+If files already exist:
+- preserve non-empty files
+- create only missing files
+- if a placeholder file exists and is nearly empty, enrich it only if explicitly asked
+- never overwrite user-authored content unless explicitly requested
+
+---
+
+### Additional folders and files to ensure exist
+
+Under `mini-cloud-proxmox/`, ensure these files also exist if missing:
+
+k8s/
+├─ base/
+│  ├─ namespaces/
+│  │  ├─ namespaces.yaml
+│  │  └─ kustomization.yaml
+│  ├─ ingress/
+│  │  ├─ whoami-ingress.yaml
+│  │  └─ kustomization.yaml
+│  ├─ rbac/
+│  │  └─ README.md
+│  ├─ storage/
+│  │  ├─ pvc-demo.yaml
+│  │  └─ kustomization.yaml
+│  └─ certs/
+│     └─ README.md
+├─ apps/
+│  ├─ demo/
+│  │  ├─ whoami-deployment.yaml
+│  │  ├─ whoami-service.yaml
+│  │  ├─ whoami-ingress.yaml
+│  │  └─ kustomization.yaml
+│  ├─ headlamp/
+│  │  └─ README.md
+│  ├─ nextcloud/
+│  │  └─ README.md
+│  ├─ n8n/
+│  │  └─ README.md
+│  ├─ postgresql/
+│  │  └─ README.md
+│  ├─ redis/
+│  │  └─ README.md
+│  └─ ai/
+│     └─ README.md
+├─ gitops/
+│  ├─ argocd/
+│  │  ├─ namespace.yaml
+│  │  ├─ install-notes.md
+│  │  └─ kustomization.yaml
+│  ├─ applications/
+│  │  ├─ root-app.yaml
+│  │  ├─ observability-app.yaml
+│  │  ├─ demo-app.yaml
+│  │  └─ apps-app.yaml
+│  └─ app-of-apps/
+│     └─ README.md
+└─ observability/
+   ├─ metrics-server/
+   │  └─ README.md
+   ├─ prometheus/
+   │  └─ README.md
+   ├─ grafana/
+   │  └─ README.md
+   ├─ loki/
+   │  └─ README.md
+   └─ promtail/
+      └─ README.md
+
+helm/
+├─ headlamp/
+│  └─ values.yaml
+├─ prometheus-stack/
+│  └─ values.yaml
+├─ loki/
+│  └─ values.yaml
+├─ argocd/
+│  └─ values.yaml
+├─ nextcloud/
+│  └─ values.yaml
+├─ n8n/
+│  └─ values.yaml
+├─ postgresql/
+│  └─ values.yaml
+├─ redis/
+│  └─ values.yaml
+└─ longhorn/
+   └─ values.yaml
+
+---
+
+### Additional starter artifacts to create
+
+Create the following minimal starter manifests and notes if they do not already exist.
+
+#### 1. `k8s/base/namespaces/namespaces.yaml`
+Create Kubernetes Namespace manifests for:
+- ingress
+- observability
+- gitops
+- storage
+- apps
+- databases
+- ai
+- demo
+
+#### 2. `k8s/base/namespaces/kustomization.yaml`
+Reference `namespaces.yaml`.
+
+#### 3. `k8s/apps/demo/whoami-deployment.yaml`
+Create a minimal Deployment for a lightweight demo app such as `traefik/whoami` with 2 replicas.
+
+#### 4. `k8s/apps/demo/whoami-service.yaml`
+Create a ClusterIP Service exposing the demo app on port 80.
+
+#### 5. `k8s/apps/demo/whoami-ingress.yaml`
+Create a sample Ingress using `traefik` ingressClassName and host `whoami.lab`.
+
+#### 6. `k8s/apps/demo/kustomization.yaml`
+Reference the demo deployment, service, and ingress.
+
+#### 7. `k8s/base/storage/pvc-demo.yaml`
+Create a very small sample PVC for lab demonstration purposes.
+
+#### 8. `k8s/base/storage/kustomization.yaml`
+Reference `pvc-demo.yaml`.
+
+#### 9. `k8s/gitops/argocd/namespace.yaml`
+Create an Argo CD namespace manifest for `argocd` or `gitops` depending on the chosen naming convention, and explain the choice in comments if needed.
+
+#### 10. `k8s/gitops/applications/root-app.yaml`
+Create a starter Argo CD Application manifest placeholder following an app-of-apps approach.
+Do not invent a real repo URL; use obvious placeholders and comments.
+
+#### 11. `k8s/gitops/applications/observability-app.yaml`
+Create a placeholder Argo CD Application manifest pointing to the observability path.
+
+#### 12. `k8s/gitops/applications/demo-app.yaml`
+Create a placeholder Argo CD Application manifest pointing to the demo app path.
+
+#### 13. `k8s/gitops/applications/apps-app.yaml`
+Create a placeholder Argo CD Application manifest pointing to the apps path.
+
+#### 14. `helm/*/values.yaml`
+For each chart values file, upgrade the placeholder so that it contains:
+- a short header comment
+- namespace field if relevant
+- ingress enabled/disabled example if relevant
+- persistence section if relevant
+- resources section placeholder
+- notes that values are intentionally minimal and non-production
+
+Do not generate fully production-ready values yet.
+
+---
+
+### Kustomize support
+
+Where relevant, add minimal `kustomization.yaml` files so that the repository can evolve toward a Kustomize-friendly structure.
+
+At minimum:
+- `k8s/base/namespaces/kustomization.yaml`
+- `k8s/base/ingress/kustomization.yaml`
+- `k8s/base/storage/kustomization.yaml`
+- `k8s/apps/demo/kustomization.yaml`
+- `k8s/gitops/argocd/kustomization.yaml`
+
+These files should be minimal and valid.
+
+---
+
+### README/notes enrichment
+
+If missing, create or enrich the following README files with concise implementation-oriented guidance:
+
+- `k8s/README.md`
+- `scripts/README.md`
+- `inventory/README.md`
+- `k8s/apps/headlamp/README.md`
+- `k8s/apps/nextcloud/README.md`
+- `k8s/apps/n8n/README.md`
+- `k8s/apps/postgresql/README.md`
+- `k8s/apps/redis/README.md`
+- `k8s/apps/ai/README.md`
+- `k8s/observability/*/README.md`
+
+Each should explain:
+- purpose
+- expected future contents
+- whether the component is phase 1, phase 2, or optional/later
+
+---
+
+### Constraints for starter manifests
+
+All starter manifests must:
+- be valid YAML
+- be intentionally minimal
+- include short comments where useful
+- avoid secrets
+- avoid real credentials
+- avoid hardcoded production domains
+- avoid pretending to be fully production-ready
+- use obvious placeholders where needed
+
+---
+
+### Final behavior for extension tasks
+
+When executing this extension:
+1. Create only missing folders/files.
+2. Preserve existing user-authored content.
+3. Print a summary of:
+   - newly created files
+   - skipped existing files
+   - files left intentionally as placeholders
+4. Show the updated tree.
+5. Do not run cluster commands unless explicitly requested.

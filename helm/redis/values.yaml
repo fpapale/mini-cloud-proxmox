@@ -1,1 +1,27 @@
-# Minimal commented placeholder YAML\n# TODO: Add real values\n
+# Minimal commented placeholder YAML for redis
+# TODO: Add real production values
+
+# namespace: "default"
+
+# ingress:
+#   enabled: false
+#   hosts:
+#     - host: chart.lab
+#       paths:
+#         - path: /
+#           pathType: ImplementationSpecific
+
+# persistence:
+#   enabled: false
+#   storageClass: "local-path"
+#   size: 1Gi
+
+# resources:
+#   requests:
+#     cpu: 100m
+#     memory: 128Mi
+#   limits:
+#     cpu: 200m
+#     memory: 256Mi
+
+# Note: These values are intentionally minimal and non-production.
