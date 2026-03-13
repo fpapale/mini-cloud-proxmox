@@ -92,3 +92,124 @@ Il repository è progettato secondo i principi GitOps usando il pattern "App of 
 * `k8s/` - Manifest Kubernetes organizzati per dominio.
 * `helm/` - File customizzati `values.yaml` per deployment Helm complessi.
 * `scripts/` - Script ausiliari e di automazione.
+
+
+---
+## How to bootstrap this repo with Antigravity
+
+This repository is designed to be initialized and extended by an agent-driven workflow in Antigravity.
+
+### Goal
+
+Use Antigravity to create or extend the `mini-cloud-proxmox` repository structure without overwriting existing non-empty files.
+
+### Before you start
+
+Make sure:
+- this repository is stored inside a local folder you can open as an Antigravity workspace
+- `AGENTS.md` exists at the repository root
+- `CLAUDE.md` and `GEMINI.md` are present if you want cross-agent compatibility
+- you have reviewed the placeholder parameters in the section below
+
+### Recommended Antigravity workspace setup
+
+When opening Antigravity:
+1. Create or open a workspace pointing to the parent folder that contains `mini-cloud-proxmox`
+2. Open the repository in that workspace
+3. Keep the agent in Planning mode for the first bootstrap pass
+4. Use a review policy such as `Request Review` or `Agent decides`
+5. Keep terminal execution conservative, ideally sandboxed, for repository bootstrap tasks
+6. Do not ask the agent to run cluster installation commands during the repository bootstrap phase
+
+### Recommended first prompt
+
+Use one of these prompts in Antigravity:
+
+#### First-time bootstrap
+`Read AGENTS.md and bootstrap the mini-cloud-proxmox repository. Create the required folder tree and starter files on disk, preserve any existing non-empty files, and then show me the final tree plus created vs skipped files.`
+
+#### Extension pass
+`Read AGENTS.md and extend the existing mini-cloud-proxmox repository. Treat it as already initialized, create only missing folders/files, do not overwrite non-empty files, and then show me the updated tree plus created vs skipped files.`
+
+### What the agent is expected to create
+
+The agent should create:
+- architecture and design documents
+- diagrams and ADR files
+- inventory and notes
+- starter Kubernetes manifests
+- starter Kustomize files
+- Helm values placeholders
+- GitOps placeholder applications
+- implementation-oriented README files
+
+### What the agent should NOT do during bootstrap
+
+During repository bootstrap, the agent should not:
+- install packages on the machine
+- change global system configuration
+- invent secrets or credentials
+- run destructive shell commands
+- apply Kubernetes manifests to a real cluster
+- install K3s or Proxmox components unless explicitly requested later
+
+### Parameters to customize before real deployment
+
+Review and adjust these placeholders before using the repository for a real environment.
+
+| Parameter | Example | Where to update |
+|---|---|---|
+| Project root path | `~/projects/mini-cloud-proxmox` | local folder / workspace |
+| Workspace folder path | `~/projects` | Antigravity workspace selection |
+| Cluster name | `mini-cloud-lab` | docs, inventory, future manifests |
+| Control-plane hostname | `k3s-master` | `inventory/nodes.md`, future provisioning files |
+| Worker 1 hostname | `k3s-worker-1` | `inventory/nodes.md` |
+| Worker 2 hostname | `k3s-worker-2` | `inventory/nodes.md` |
+| Control-plane node type | `VM` | `docs/topology.md`, inventory |
+| Worker node type | `CT` | `docs/topology.md`, inventory |
+| IP subnet | `192.168.50.0/24` | `docs/networking.md`, `inventory/ips.md` |
+| Control-plane IP | `192.168.50.10` | inventory, future manifests |
+| Worker 1 IP | `192.168.50.11` | inventory |
+| Worker 2 IP | `192.168.50.12` | inventory |
+| Local lab domain | `lab` or `lab.local` | ingress samples, docs |
+| Demo ingress host | `whoami.lab` | `k8s/apps/demo/*.yaml` |
+| Headlamp host | `headlamp.lab` | docs, future ingress |
+| Grafana host | `grafana.lab` | docs, future ingress |
+| Argo CD host | `argocd.lab` | docs, future ingress |
+| Nextcloud host | `nextcloud.lab` | docs, future ingress |
+| n8n host | `n8n.lab` | docs, future ingress |
+| Storage mode | `local-path` | docs, storage files |
+| Later storage mode | `longhorn` | docs, future Helm values |
+| Git repository URL | `https://example.invalid/mini-cloud-proxmox.git` | Argo CD placeholders |
+| Argo CD namespace | `argocd` or `gitops` | `k8s/gitops/*` |
+| Optional AI enabled | `false` | docs and future app manifests |
+
+### Where to put real values later
+
+Use these locations when you move from placeholders to real configuration:
+- `inventory/nodes.md` for node names, roles, and sizes
+- `inventory/ips.md` for IP planning
+- `docs/networking.md` for domain and traffic choices
+- `docs/storage-strategy.md` for storage decisions
+- `helm/*/values.yaml` for chart-specific settings
+- `k8s/apps/*` for per-application manifests
+- `k8s/gitops/applications/*` for Argo CD application definitions
+
+### Suggested workflow after bootstrap
+
+1. Bootstrap the repository structure
+2. Review the generated tree
+3. Fill in inventory and IP planning
+4. Refine architecture and topology docs
+5. Decide whether workers remain CT-based or move to VM
+6. Start preparing real Helm values and manifests
+7. Only after that, move to actual Proxmox and K3s installation steps
+
+### Propmt to install
+Read AGENTS.md and extend or bootstrap the current mini-cloud-proxmox repository. Treat the repository as already initialized if it exists. Create only missing folders and files, preserve all non-empty files, populate the requested starter content, and then show me the final tree plus created vs skipped files.
+
+I parametri non li metti in un file separato all’inizio. Per questa fase li metti in tre posti:
+
+README.md → tabella di riferimento iniziale
+inventory/nodes.md e inventory/ips.md → dati reali di nodi e rete
+helm/*/values.yaml e k8s/apps/* → valori tecnici reali quando passerai dall’architettura all’installazione

@@ -1,15 +1,15 @@
-# Mini Cloud Proxmox Workspace Bootstrap Instructions
+# Mini Cloud Proxmox - Repository Bootstrap and Scaffold Rules
 
-You are acting as a senior platform architect and repository bootstrap agent.
+You are acting as a senior platform architect, repository bootstrap agent, and implementation scaffold assistant.
 
-Your job is to initialize and maintain a workspace for a project called `mini-cloud-proxmox`.
+Your job is to initialize, extend, and maintain a workspace for a project called `mini-cloud-proxmox`.
 
 ## Mission
 
-Create a clean, structured, implementation-ready workspace for a home mini-cloud running on Proxmox with a Kubernetes cluster based on K3s.
+Create and maintain a clean, structured, implementation-ready workspace for a home mini-cloud running on Proxmox with a Kubernetes cluster based on K3s.
 
-The workspace must support both:
-1. architecture/design work
+The repository must support both:
+1. architecture and design work
 2. future implementation artifacts
 
 This project is a home lab / mini-cloud with the following target stack:
@@ -30,7 +30,7 @@ This project is a home lab / mini-cloud with the following target stack:
 - Optional AI services such as Ollama / Open WebUI
 - Optional distributed storage such as Longhorn in a later phase
 
-The workspace must be organized to host:
+The repository must be organized to host:
 - architecture documents
 - diagrams
 - ADRs
@@ -44,7 +44,7 @@ The workspace must be organized to host:
 
 ---
 
-## Operating rules
+## Operating Rules
 
 1. Be idempotent.
    - If the structure already exists, do not destroy it.
@@ -56,19 +56,24 @@ The workspace must be organized to host:
    - Do not install software packages on the host machine unless explicitly requested.
    - Do not run destructive shell commands.
    - Do not modify global system configuration.
-   - Limit yourself to preparing the project workspace structure and initial scaffold files.
+   - Limit yourself to preparing the project workspace structure and starter scaffold files unless the user explicitly asks for implementation or execution.
 
 3. Be practical.
    - Optimize for maintainability and clarity, not enterprise overkill.
    - Use simple, readable Markdown and YAML stubs.
    - Add brief comments in placeholder files where useful.
 
-4. Keep the workspace implementation-ready.
+4. Keep the repository implementation-ready.
    - Create folders and starter files that can later be used directly for Kubernetes manifests, Helm values, GitOps applications, diagrams, and architecture documentation.
+
+5. Prefer preserving user-authored work.
+   - If a file is already meaningful, do not rewrite it.
+   - If a placeholder file exists and is almost empty, enrich it only if explicitly asked.
+   - When in doubt, skip and report.
 
 ---
 
-## Root directory to create
+## Root Directory
 
 Create this root folder if it does not already exist:
 
@@ -78,7 +83,7 @@ All files and folders must live under this root.
 
 ---
 
-## Required directory tree
+## Required Directory Tree
 
 Create the following structure under `mini-cloud-proxmox`:
 
@@ -131,33 +136,41 @@ mini-cloud-proxmox/
 │  ├─ README.md
 │  ├─ base/
 │  │  ├─ namespaces/
-│  │  │  └─ .gitkeep
+│  │  │  ├─ namespaces.yaml
+│  │  │  └─ kustomization.yaml
 │  │  ├─ ingress/
-│  │  │  └─ .gitkeep
+│  │  │  ├─ whoami-ingress.yaml
+│  │  │  └─ kustomization.yaml
 │  │  ├─ rbac/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ storage/
-│  │  │  └─ .gitkeep
+│  │  │  ├─ pvc-demo.yaml
+│  │  │  └─ kustomization.yaml
 │  │  └─ certs/
-│  │     └─ .gitkeep
+│  │     └─ README.md
 │  ├─ observability/
 │  │  ├─ metrics-server/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ prometheus/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ grafana/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ loki/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  └─ promtail/
-│  │     └─ .gitkeep
+│  │     └─ README.md
 │  ├─ gitops/
 │  │  ├─ argocd/
-│  │  │  └─ .gitkeep
+│  │  │  ├─ namespace.yaml
+│  │  │  ├─ install-notes.md
+│  │  │  └─ kustomization.yaml
 │  │  ├─ applications/
-│  │  │  └─ .gitkeep
+│  │  │  ├─ root-app.yaml
+│  │  │  ├─ observability-app.yaml
+│  │  │  ├─ demo-app.yaml
+│  │  │  └─ apps-app.yaml
 │  │  └─ app-of-apps/
-│  │     └─ .gitkeep
+│  │     └─ README.md
 │  ├─ storage/
 │  │  ├─ local-path/
 │  │  │  └─ .gitkeep
@@ -167,19 +180,22 @@ mini-cloud-proxmox/
 │  │     └─ .gitkeep
 │  ├─ apps/
 │  │  ├─ headlamp/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ nextcloud/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ n8n/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ postgresql/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ redis/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  ├─ ai/
-│  │  │  └─ .gitkeep
+│  │  │  └─ README.md
 │  │  └─ demo/
-│  │     └─ .gitkeep
+│  │     ├─ whoami-deployment.yaml
+│  │     ├─ whoami-service.yaml
+│  │     ├─ whoami-ingress.yaml
+│  │     └─ kustomization.yaml
 │  └─ environments/
 │     ├─ lab/
 │     │  └─ .gitkeep
@@ -212,11 +228,11 @@ mini-cloud-proxmox/
 
 ---
 
-## Files to initialize with meaningful starter content
+## Files To Initialize With Meaningful Starter Content
 
-Create these files with short but useful initial content:
+Create these files with short but useful initial content if they are missing.
 
-### 1. `README.md`
+### `README.md`
 Include:
 - project title
 - purpose of the mini-cloud
@@ -224,8 +240,10 @@ Include:
 - target services
 - phases of implementation
 - short repository map
+- a section called `How to bootstrap this repo with Antigravity`
+- a section called `Parameters to customize before real deployment`
 
-### 2. `docs/architecture.md`
+### `docs/architecture.md`
 Include:
 - executive summary
 - architecture layers:
@@ -238,13 +256,13 @@ Include:
   - apps/data layer
 - note that AI and Longhorn are optional later phases
 
-### 3. `docs/topology.md`
+### `docs/topology.md`
 Include:
 - preferred topology: 1 control-plane VM + 2 CT workers
 - trade-offs of CT workers
 - fallback option: all-VM if CT limitations appear
 
-### 4. `docs/networking.md`
+### `docs/networking.md`
 Include:
 - north-south traffic
 - east-west traffic
@@ -256,21 +274,21 @@ Include:
   - nextcloud.lab
   - n8n.lab
 
-### 5. `docs/storage-strategy.md`
+### `docs/storage-strategy.md`
 Include:
 - phase 1: local-path/default storage
 - phase 2: persistent services
 - phase 3: Longhorn optional
 - pros/cons summary
 
-### 6. `docs/exposure-strategy.md`
+### `docs/exposure-strategy.md`
 Include:
 - local-only lab exposure first
 - hosts file / local DNS approach
 - which services should be internal-only
 - HTTPS/cert-manager as later phase
 
-### 7. `docs/observability.md`
+### `docs/observability.md`
 Include:
 - Metrics Server
 - Prometheus
@@ -279,13 +297,13 @@ Include:
 - Promtail
 - what each does
 
-### 8. `docs/gitops-strategy.md`
+### `docs/gitops-strategy.md`
 Include:
 - why Argo CD
 - separation between infra and apps
 - suggested future app-of-apps model
 
-### 9. `docs/implementation-roadmap.md`
+### `docs/implementation-roadmap.md`
 Include phases:
 - Phase 0: Proxmox base prep
 - Phase 1: K3s bootstrap
@@ -294,14 +312,14 @@ Include phases:
 - Phase 4: useful apps
 - Phase 5: hardening, backups, optional AI/storage expansion
 
-### 10. `docs/bom-sizing.md`
+### `docs/bom-sizing.md`
 Include three sizing tiers:
 - minimum viable
 - recommended
 - expanded with AI
 Add placeholder tables.
 
-### 11. `docs/risk-register.md`
+### `docs/risk-register.md`
 Include a table with these risks:
 - CT/LXC limitations
 - resource contention
@@ -310,7 +328,7 @@ Include a table with these risks:
 - secrets handling
 - backup gaps
 
-### 12. `diagrams/mini-cloud-architecture.mmd`
+### `diagrams/mini-cloud-architecture.mmd`
 Create a starter Mermaid diagram showing:
 - user/browser
 - Proxmox
@@ -325,13 +343,13 @@ Create a starter Mermaid diagram showing:
 - Apps
 - Storage
 
-### 13. `diagrams/network-flows.mmd`
+### `diagrams/network-flows.mmd`
 Create a basic Mermaid flow diagram for:
 - admin traffic
 - ingress traffic
 - internal cluster traffic
 
-### 14. `diagrams/namespaces.mmd`
+### `diagrams/namespaces.mmd`
 Create a Mermaid diagram for suggested namespaces:
 - ingress
 - observability
@@ -342,7 +360,7 @@ Create a Mermaid diagram for suggested namespaces:
 - ai
 - demo
 
-### 15. ADR files
+### ADR files
 Initialize each ADR with:
 - title
 - status: proposed
@@ -350,7 +368,7 @@ Initialize each ADR with:
 - decision
 - consequences
 
-### 16. `notes/lab-experiments.md`
+### `notes/lab-experiments.md`
 Initialize with a checklist of learning experiments such as:
 - pod self-healing
 - node failure simulation
@@ -361,7 +379,7 @@ Initialize with a checklist of learning experiments such as:
 - node drain
 - scaling
 
-### 17. `inventory/nodes.md`
+### `inventory/nodes.md`
 Create a starter table for:
 - node name
 - type (VM/CT)
@@ -371,13 +389,13 @@ Create a starter table for:
 - disk
 - IP
 
-### 18. `inventory/ips.md`
+### `inventory/ips.md`
 Create a starter placeholder table for IP planning.
 
-### 19. `inventory/resources.md`
+### `inventory/resources.md`
 Create a starter resource budgeting file.
 
-### 20. `helm/repositories.md`
+### `helm/repositories.md`
 Add a placeholder list of future Helm repositories for:
 - headlamp
 - prometheus-community
@@ -387,165 +405,16 @@ Add a placeholder list of future Helm repositories for:
 - nextcloud
 - longhorn
 
-### 21. `helm/*/values.yaml`
+### `helm/*/values.yaml`
 For each chart values file, create a minimal commented placeholder YAML, not a full real config yet.
 
 ---
 
-## Content style
-
-Use:
-- concise, clean Markdown
-- practical wording
-- implementation-oriented structure
-- no unnecessary verbosity
-
----
-
-## Git ignore
-
-Create a `.gitignore` suitable for a repo containing:
-- editor temp files
-- OS temp files
-- local kubeconfigs
-- secrets files
-- `.env`
-- generated archives
-
----
-
-## Final task after scaffold creation
-
-After creating the structure and starter files:
-
-1. Print a concise summary of what was created.
-2. Print the final tree.
-3. Highlight any files that were skipped because they already existed.
-4. Do not invent missing production configs yet.
-5. Do not populate secrets.
-6. Do not run Kubernetes commands unless explicitly requested.
-
----
-
-## Success criteria
-
-The workspace is considered successfully bootstrapped when:
-- the full folder structure exists
-- all required starter files exist
-- the Markdown files contain meaningful initial scaffolding
-- the Mermaid files contain valid starter diagrams
-- the repository is ready for future architecture and implementation work
-
-## Implementation-Ready Scaffold Extension
-
-In addition to the base workspace bootstrap, extend the repository with implementation-ready starter artifacts.
-
-### Extension goal
-
-Prepare the `mini-cloud-proxmox` workspace not only as a documentation/design repository, but also as an initial executable scaffold for future Kubernetes deployment work.
-
-The extension must remain:
-- idempotent
-- non-destructive
-- conservative
-- compatible with the existing repository structure already created
-
-If files already exist:
-- preserve non-empty files
-- create only missing files
-- if a placeholder file exists and is nearly empty, enrich it only if explicitly asked
-- never overwrite user-authored content unless explicitly requested
-
----
-
-### Additional folders and files to ensure exist
-
-Under `mini-cloud-proxmox/`, ensure these files also exist if missing:
-
-k8s/
-├─ base/
-│  ├─ namespaces/
-│  │  ├─ namespaces.yaml
-│  │  └─ kustomization.yaml
-│  ├─ ingress/
-│  │  ├─ whoami-ingress.yaml
-│  │  └─ kustomization.yaml
-│  ├─ rbac/
-│  │  └─ README.md
-│  ├─ storage/
-│  │  ├─ pvc-demo.yaml
-│  │  └─ kustomization.yaml
-│  └─ certs/
-│     └─ README.md
-├─ apps/
-│  ├─ demo/
-│  │  ├─ whoami-deployment.yaml
-│  │  ├─ whoami-service.yaml
-│  │  ├─ whoami-ingress.yaml
-│  │  └─ kustomization.yaml
-│  ├─ headlamp/
-│  │  └─ README.md
-│  ├─ nextcloud/
-│  │  └─ README.md
-│  ├─ n8n/
-│  │  └─ README.md
-│  ├─ postgresql/
-│  │  └─ README.md
-│  ├─ redis/
-│  │  └─ README.md
-│  └─ ai/
-│     └─ README.md
-├─ gitops/
-│  ├─ argocd/
-│  │  ├─ namespace.yaml
-│  │  ├─ install-notes.md
-│  │  └─ kustomization.yaml
-│  ├─ applications/
-│  │  ├─ root-app.yaml
-│  │  ├─ observability-app.yaml
-│  │  ├─ demo-app.yaml
-│  │  └─ apps-app.yaml
-│  └─ app-of-apps/
-│     └─ README.md
-└─ observability/
-   ├─ metrics-server/
-   │  └─ README.md
-   ├─ prometheus/
-   │  └─ README.md
-   ├─ grafana/
-   │  └─ README.md
-   ├─ loki/
-   │  └─ README.md
-   └─ promtail/
-      └─ README.md
-
-helm/
-├─ headlamp/
-│  └─ values.yaml
-├─ prometheus-stack/
-│  └─ values.yaml
-├─ loki/
-│  └─ values.yaml
-├─ argocd/
-│  └─ values.yaml
-├─ nextcloud/
-│  └─ values.yaml
-├─ n8n/
-│  └─ values.yaml
-├─ postgresql/
-│  └─ values.yaml
-├─ redis/
-│  └─ values.yaml
-└─ longhorn/
-   └─ values.yaml
-
----
-
-### Additional starter artifacts to create
+## Additional Starter Artifacts To Create
 
 Create the following minimal starter manifests and notes if they do not already exist.
 
-#### 1. `k8s/base/namespaces/namespaces.yaml`
+### `k8s/base/namespaces/namespaces.yaml`
 Create Kubernetes Namespace manifests for:
 - ingress
 - observability
@@ -556,45 +425,57 @@ Create Kubernetes Namespace manifests for:
 - ai
 - demo
 
-#### 2. `k8s/base/namespaces/kustomization.yaml`
+### `k8s/base/namespaces/kustomization.yaml`
 Reference `namespaces.yaml`.
 
-#### 3. `k8s/apps/demo/whoami-deployment.yaml`
-Create a minimal Deployment for a lightweight demo app such as `traefik/whoami` with 2 replicas.
+### `k8s/apps/demo/whoami-deployment.yaml`
+Create a minimal Deployment for `traefik/whoami` with 2 replicas.
 
-#### 4. `k8s/apps/demo/whoami-service.yaml`
+### `k8s/apps/demo/whoami-service.yaml`
 Create a ClusterIP Service exposing the demo app on port 80.
 
-#### 5. `k8s/apps/demo/whoami-ingress.yaml`
-Create a sample Ingress using `traefik` ingressClassName and host `whoami.lab`.
+### `k8s/apps/demo/whoami-ingress.yaml`
+Create a sample Ingress using `traefik` as `ingressClassName` and host `whoami.lab`.
 
-#### 6. `k8s/apps/demo/kustomization.yaml`
+### `k8s/apps/demo/kustomization.yaml`
 Reference the demo deployment, service, and ingress.
 
-#### 7. `k8s/base/storage/pvc-demo.yaml`
+### `k8s/base/ingress/whoami-ingress.yaml`
+Create a second simple ingress sample or a note explaining that demo ingress lives under app manifests. Keep it minimal and consistent.
+
+### `k8s/base/ingress/kustomization.yaml`
+Create a minimal valid kustomization file.
+
+### `k8s/base/storage/pvc-demo.yaml`
 Create a very small sample PVC for lab demonstration purposes.
 
-#### 8. `k8s/base/storage/kustomization.yaml`
+### `k8s/base/storage/kustomization.yaml`
 Reference `pvc-demo.yaml`.
 
-#### 9. `k8s/gitops/argocd/namespace.yaml`
+### `k8s/gitops/argocd/namespace.yaml`
 Create an Argo CD namespace manifest for `argocd` or `gitops` depending on the chosen naming convention, and explain the choice in comments if needed.
 
-#### 10. `k8s/gitops/applications/root-app.yaml`
+### `k8s/gitops/argocd/install-notes.md`
+Add a short note explaining this folder is for install-related files and handoff to GitOps management later.
+
+### `k8s/gitops/argocd/kustomization.yaml`
+Create a minimal valid kustomization file.
+
+### `k8s/gitops/applications/root-app.yaml`
 Create a starter Argo CD Application manifest placeholder following an app-of-apps approach.
 Do not invent a real repo URL; use obvious placeholders and comments.
 
-#### 11. `k8s/gitops/applications/observability-app.yaml`
+### `k8s/gitops/applications/observability-app.yaml`
 Create a placeholder Argo CD Application manifest pointing to the observability path.
 
-#### 12. `k8s/gitops/applications/demo-app.yaml`
+### `k8s/gitops/applications/demo-app.yaml`
 Create a placeholder Argo CD Application manifest pointing to the demo app path.
 
-#### 13. `k8s/gitops/applications/apps-app.yaml`
+### `k8s/gitops/applications/apps-app.yaml`
 Create a placeholder Argo CD Application manifest pointing to the apps path.
 
-#### 14. `helm/*/values.yaml`
-For each chart values file, upgrade the placeholder so that it contains:
+### `helm/*/values.yaml`
+For each chart values file, ensure it contains:
 - a short header comment
 - namespace field if relevant
 - ingress enabled/disabled example if relevant
@@ -606,7 +487,7 @@ Do not generate fully production-ready values yet.
 
 ---
 
-### Kustomize support
+## Kustomize Support
 
 Where relevant, add minimal `kustomization.yaml` files so that the repository can evolve toward a Kustomize-friendly structure.
 
@@ -621,7 +502,7 @@ These files should be minimal and valid.
 
 ---
 
-### README/notes enrichment
+## README And Notes Enrichment
 
 If missing, create or enrich the following README files with concise implementation-oriented guidance:
 
@@ -634,7 +515,11 @@ If missing, create or enrich the following README files with concise implementat
 - `k8s/apps/postgresql/README.md`
 - `k8s/apps/redis/README.md`
 - `k8s/apps/ai/README.md`
-- `k8s/observability/*/README.md`
+- `k8s/observability/metrics-server/README.md`
+- `k8s/observability/prometheus/README.md`
+- `k8s/observability/grafana/README.md`
+- `k8s/observability/loki/README.md`
+- `k8s/observability/promtail/README.md`
 
 Each should explain:
 - purpose
@@ -643,7 +528,7 @@ Each should explain:
 
 ---
 
-### Constraints for starter manifests
+## Constraints For Starter Manifests
 
 All starter manifests must:
 - be valid YAML
@@ -657,14 +542,73 @@ All starter manifests must:
 
 ---
 
-### Final behavior for extension tasks
+## Content Style
 
-When executing this extension:
+Use:
+- concise, clean Markdown
+- practical wording
+- implementation-oriented structure
+- no unnecessary verbosity
+
+---
+
+## Git Ignore
+
+Create a `.gitignore` suitable for a repo containing:
+- editor temp files
+- OS temp files
+- local kubeconfigs
+- secrets files
+- `.env`
+- generated archives
+
+---
+
+## Parameters To Support In README
+
+When generating `README.md`, include a section called `Parameters to customize before real deployment` with a small table covering at least:
+- project root path
+- workspace folder path
+- cluster name
+- control-plane hostname
+- worker hostnames
+- node type (VM/CT)
+- IP subnet
+- control-plane IP
+- worker IPs
+- local lab domain
+- ingress hostnames
+- storage mode
+- Git repository URL placeholder
+- Argo CD namespace choice
+- optional AI enablement
+
+Use placeholders and examples only.
+
+---
+
+## Final Behavior
+
+When executing these rules:
 1. Create only missing folders/files.
 2. Preserve existing user-authored content.
-3. Print a summary of:
+3. Print a concise summary of:
    - newly created files
    - skipped existing files
    - files left intentionally as placeholders
-4. Show the updated tree.
-5. Do not run cluster commands unless explicitly requested.
+4. Show the final tree.
+5. Do not invent production secrets or credentials.
+6. Do not run Kubernetes commands unless explicitly requested.
+7. Treat the repository as already initialized if it exists; this may be an extension pass rather than a full regeneration.
+
+---
+
+## Success Criteria
+
+The repository is considered successfully bootstrapped when:
+- the full folder structure exists
+- all required starter files exist
+- the Markdown files contain meaningful initial scaffolding
+- the Mermaid files contain valid starter diagrams
+- the starter YAML manifests are valid and intentionally minimal
+- the repository is ready for future architecture and implementation work
