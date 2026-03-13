@@ -1,0 +1,19 @@
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Kubeconfig
+kubeconfig.yaml
+*.kubeconfig
+
+# Secrets
+.env
+*.secret.yaml
+
+# Archives
+*.tar.gz
+*.zip

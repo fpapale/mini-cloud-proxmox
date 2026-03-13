@@ -1,0 +1,10 @@
+flowchart LR
+    Admin([Management Admin]) --> Proxmox(Proxmox 8006)
+    Admin --> KubeAPI(K3s 6443)
+    
+    User([Client]) --> Ingress(Ingress 80/443)
+    
+    Ingress --> Svc1(Frontend Svc)
+    Svc1 --> Pod1(Backend Pod)
+    
+    Prometheus --> Pod1

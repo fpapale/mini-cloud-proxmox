@@ -1,0 +1,25 @@
+flowchart TD
+    User([User/Browser]) --> Traefik
+
+    subgraph Proxmox [Proxmox VE]
+        subgraph Cluster [K3s Cluster]
+            Traefik[Traefik Ingress]
+            
+            subgraph ControlPlane [VM: Control Plane]
+                APIServer
+            end
+            
+            subgraph Worker1 [CT: Worker 1]
+                Headlamp
+                Prometheus
+                Grafana
+            end
+
+            subgraph Worker2 [CT: Worker 2]
+                Loki
+                ArgoCD
+                Apps[Apps: Nextcloud, n8n]
+                Storage[Local Path / Longhorn]
+            end
+        end
+    end
