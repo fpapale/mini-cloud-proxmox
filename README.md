@@ -205,7 +205,7 @@ Use these locations when you move from placeholders to real configuration:
 6. Start preparing real Helm values and manifests
 7. Only after that, move to actual Proxmox and K3s installation steps
 
-### Propmt to install
+### Prompt to install
 Read AGENTS.md and extend or bootstrap the current mini-cloud-proxmox repository. Treat the repository as already initialized if it exists. Create only missing folders and files, preserve all non-empty files, populate the requested starter content, and then show me the final tree plus created vs skipped files.
 
 I parametri non li metti in un file separato all’inizio. Per questa fase li metti in tre posti:
