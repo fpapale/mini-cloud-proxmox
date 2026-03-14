@@ -213,3 +213,4 @@ I parametri non li metti in un file separato all’inizio. Per questa fase li me
 README.md → tabella di riferimento iniziale
 inventory/nodes.md e inventory/ips.md → dati reali di nodi e rete
 helm/*/values.yaml e k8s/apps/* → valori tecnici reali quando passerai dall’architettura all’installazione
+See `docs/prompts/antigravity-install-k3s.md` for the execution prompt used to install the cluster on the target nodes.
