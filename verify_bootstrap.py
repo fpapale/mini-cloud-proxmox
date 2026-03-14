@@ -172,8 +172,6 @@ Note: AI and Longhorn are optional later phases.
 | Secrets handling | Hardcoded secrets in Git | Use .env or Sealed Secrets |
 | Backup gaps | No disaster recovery plan | Setup Velero or Proxmox backups |
 """,
-    "docs/prompts/README.md": """# Installation Prompts
-""",
     "diagrams/README.md": """# Diagrams
 Store all architecture and flow diagrams here.
 """,
