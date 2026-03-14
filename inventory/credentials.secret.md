@@ -1,0 +1,4 @@
+PROXMOX_USER=root@pam
+PROXMOX_PASSWORD=ViaGoceano2021
+K3S_TOKEN=ViaGoceano2021
+

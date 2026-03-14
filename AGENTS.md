@@ -100,7 +100,9 @@ mini-cloud-proxmox/
 │  ├─ gitops-strategy.md
 │  ├─ implementation-roadmap.md
 │  ├─ bom-sizing.md
-│  └─ risk-register.md
+│  ├─ risk-register.md
+│  └─ prompts/
+│     └─ README.md
 ├─ diagrams/
 │  ├─ README.md
 │  ├─ mini-cloud-architecture.mmd
@@ -327,6 +329,10 @@ Include a table with these risks:
 - storage fragility
 - secrets handling
 - backup gaps
+
+### `docs/prompts/README.md`
+Include:
+- placeholder for installation prompts or logs
 
 ### `diagrams/mini-cloud-architecture.mmd`
 Create a starter Mermaid diagram showing:
